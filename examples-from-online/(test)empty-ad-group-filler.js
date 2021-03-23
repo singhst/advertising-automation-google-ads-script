@@ -87,43 +87,47 @@ function main() {
 
   // Check batches of 100 campaigns at a time
   for (var i = 0; i < campaignIds.length; i += 100) {
+    Logger.log('campaignIds: ' + campaignIds)
+
     var campaignBatch = campaignIds.slice(i, i + 100);
     var failedCampaignsInBatch = [];
 
+    Logger.log('campaignBatch: ' + campaignBatch)
+
     var adGroupIds = getAdGroupIdsWithoutLabel(campaignBatch, checkedLabelId);
 
-    // Check batches of 1000 ad groups at a time
-    for (var j = 0; j < adGroupIds.length; j += 1000) {
-      var adGroupBatch = adGroupIds.slice(j, j + 1000);
+    // // Check batches of 1000 ad groups at a time
+    // for (var j = 0; j < adGroupIds.length; j += 1000) {
+    //   var adGroupBatch = adGroupIds.slice(j, j + 1000);
 
-      var adGroupsWithAds = getAdGroupsWithAds(adGroupBatch);
+    //   var adGroupsWithAds = getAdGroupsWithAds(adGroupBatch);
 
-      if (adGroupBatch.length - adGroupsWithAds.length != 0) {
-        var failedIds = createTemplateAds(adGroupBatch, adGroupsWithAds, newAdLabelName);
-      } else {
-        var failedIds = { failedGroups: [], failedCampaigns: [] };
-      }
+    //   if (adGroupBatch.length - adGroupsWithAds.length != 0) {
+    //     var failedIds = createTemplateAds(adGroupBatch, adGroupsWithAds, newAdLabelName);
+    //   } else {
+    //     var failedIds = { failedGroups: [], failedCampaigns: [] };
+    //   }
 
-      // Label the ad groups, except those where ads couldn't be created
-      applyLabel(checkedLabelName, 'adGroups', adGroupBatch, failedIds.failedGroups);
+    //   // Label the ad groups, except those where ads couldn't be created
+    //   applyLabel(checkedLabelName, 'adGroups', adGroupBatch, failedIds.failedGroups);
 
-      Logger.log(adGroupsWithAds.length + ' groups already had ads; '
-                 + (adGroupBatch.length - adGroupsWithAds.length - failedIds.failedGroups.length) + ' ads created');
-      if (failedIds.failedGroups.length > 0) {
-        Logger.log(failedIds.failedGroups.length + ' ads could not be created.');
-      }
+    //   Logger.log(adGroupsWithAds.length + ' groups already had ads; '
+    //     + (adGroupBatch.length - adGroupsWithAds.length - failedIds.failedGroups.length) + ' ads created');
+    //   if (failedIds.failedGroups.length > 0) {
+    //     Logger.log(failedIds.failedGroups.length + ' ads could not be created.');
+    //   }
 
-      // Record the campaign IDs of any ad groups where ad creation failed
-      for (var c in failedIds.failedCampaigns) {
-        if (failedCampaignsInBatch.indexOf(failedIds.failedCampaigns[c]) < 0) {
-          failedCampaignsInBatch.push(failedIds.failedCampaigns[c]);
-        }
-      }
-    }
+    //   // Record the campaign IDs of any ad groups where ad creation failed
+    //   for (var c in failedIds.failedCampaigns) {
+    //     if (failedCampaignsInBatch.indexOf(failedIds.failedCampaigns[c]) < 0) {
+    //       failedCampaignsInBatch.push(failedIds.failedCampaigns[c]);
+    //     }
+    //   }
+    // }
 
-    // Label the campaigns where all ad groups were processed successfully
-    applyLabel(checkedLabelName, 'campaigns', campaignBatch, failedCampaignsInBatch);
-    Logger.log((campaignBatch.length - failedCampaignsInBatch.length) + ' campaigns checked successfully.');
+    // // Label the campaigns where all ad groups were processed successfully
+    // applyLabel(checkedLabelName, 'campaigns', campaignBatch, failedCampaignsInBatch);
+    // Logger.log((campaignBatch.length - failedCampaignsInBatch.length) + ' campaigns checked successfully.');
   }
 
   Logger.log('Account finished.');
@@ -272,8 +276,8 @@ function getAdGroupIdsWithoutLabel(campaignIds, labelId) {
     + 'FROM   ADGROUP_PERFORMANCE_REPORT '
     + 'WHERE CampaignId IN [' + campaignIds.join(',') + '] AND '
     + whereStatement
-      + 'AND Labels CONTAINS_NONE [' + labelId + '] '
-        + 'DURING LAST_30_DAYS'
+    + 'AND Labels CONTAINS_NONE [' + labelId + '] '
+    + 'DURING LAST_30_DAYS'
   );
 
   var rows = report.rows();
