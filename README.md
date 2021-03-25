@@ -5,11 +5,31 @@
 JavaScript codes to automate different actions in Google Ads.
 
 Steps of this program:
-1. Get top-N keywords from a campaign, which ranked by number of clicks OR impressions etc.
+1. Get top-N keywords and Ad from a campaign, which ranked by number of clicks, impressions OR other metrics etc.
+    
+    Types of Ad:
+    
+    (a) EXPANDED_TEXT_AD
+
+    (b) RESPONSIVE_SEARCH_AD
+    
+    (c) RESPONSIVE_DISPLAY_AD
+
+    (d) imageAd
+
+    (e) html5Ad
+
+    (f) gmailSinglePromotionAd
+
+    (g) gmailMultiProductAd
+
+    (h) gmailImageAd
+
+    (i) expandedTextAd
 2. Create a new Ad Group in that campaign.
 3. Add the following in the new Ad Group:
     (a) top-N keywords
-    (b) Expanded Text Ad
+    (b) top-N Ad
 
 ## Configuration on Google Ads
 
