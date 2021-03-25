@@ -34,7 +34,7 @@ var costPerClick = 1.5
 var headlinePart1 = ' Bike Repair Shop';
 var headlinePart2 = 'Fast & professional';
 var description = 'Repair Your Bike Here & Buy Accessories. ' +
-                  'Book Your Appointment Now!';
+  'Book Your Appointment Now!';
 var finalUrl = 'https://www.example.com' //'www.example.com/Your-Landing-Page';
 // var urlPath1 = 'Path Text 1';
 // var urlPath2 = 'Path Text 2';
@@ -70,20 +70,20 @@ function createAdGroup(campaign, adGroupName) {
   var adGroupBuilder = campaign.newAdGroupBuilder();
 
   var adGroupOperation = adGroupBuilder
-  .withName(adGroupName.toLowerCase().replace(/ /g, '_'))
-  .withStatus('PAUSED')
-  .build();
-  
+    .withName(adGroupName.toLowerCase().replace(/ /g, '_'))
+    .withStatus('PAUSED')
+    .build();
+
   var adGroup = adGroupOperation.getResult();
-  
-  return adGroup; 
+
+  return adGroup;
 }
 
 
 function addKeywordToAdGroup(adGroup, keywords) {
   //Add keywords
   keywords.forEach(function (keyword) {
-    adGroup.newKeywordBuilder()
+    adGroup = adGroup.newKeywordBuilder()
       // .withText('+' + keyword.toLowerCase().replace(/ /g, ' +')) //'+' enables broad match
       .withText(keyword.toLowerCase())
       // .withCpc(costPerClick)
@@ -97,14 +97,14 @@ function addKeywordToAdGroup(adGroup, keywords) {
 
 function addExpandedTextAdToAdGroup(adGroup, adGroupName) {
   //Add expanded text ad
-  adGroup.newAd().expandedTextAdBuilder()
-  .withHeadlinePart1(adGroupName + headlinePart1)
-  .withHeadlinePart2(headlinePart2)
-  .withDescription(description)
-  // .withPath1('bike-repair')
-  // .withPath2(adGroupName.toLowerCase().replace(/ /g, '_'))
-  .withFinalUrl(finalUrl)
-  .build();
+  adGroup = adGroup.newAd().expandedTextAdBuilder()
+    .withHeadlinePart1(adGroupName + headlinePart1)
+    .withHeadlinePart2(headlinePart2)
+    .withDescription(description)
+    // .withPath1('bike-repair')
+    // .withPath2(adGroupName.toLowerCase().replace(/ /g, '_'))
+    .withFinalUrl(finalUrl)
+    .build();
 
   return adGroup;
 }
