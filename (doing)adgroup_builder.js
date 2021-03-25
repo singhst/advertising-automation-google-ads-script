@@ -2,8 +2,9 @@
 
 Steps of this program:
 1. Get top-N keywords from a campaign, which ranked by number of clicks OR impressions etc.
-2. Create a new Ad Group in that campaign.
-3. Add the following in the new Ad Group:
+2. Get the best Ad (expanded text ad, Responsive search ad, Responsive display ad)
+3. Create a new Ad Group in that campaign.
+4. Add the following in the new Ad Group:
     (a) top-N keywords
     (b) Expanded Text Ad
 */
