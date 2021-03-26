@@ -1,5 +1,4 @@
-# google-ads-script
-
+# advertising-automation-google-ads-script
 
 ## Usage
 JavaScript codes to automate different actions in Google Ads.
