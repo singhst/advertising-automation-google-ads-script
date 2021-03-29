@@ -2,11 +2,12 @@
 
 Steps of this program:
 1. Get top-N keywords from a campaign, which ranked by number of clicks OR impressions etc.
-2. Get the best Ad (expanded text ad, Responsive search ad, Responsive display ad)
+2. Get the best Ad (expanded text ad, Responsive search ad, Responsive display ad, etc.)
 3. Create a new Ad Group in that campaign.
 4. Add the following in the new Ad Group:
     (a) top-N keywords
-    (b) Expanded Text Ad
+    (b) the best Ad in the campaign
+
 */
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -26,18 +27,27 @@ var adGroupNames = [
   // 'Chicago',
   // 'Houston',
   // 'Philadelphia'
-  'adgroup_builder'
+  'best_keyword_cpc_last_14days'
 ];
 //Define the Ad Group name.
 
 var costPerClick = 1.5
 //Sets the max CPC bid of the new audience to the specified value.
 
-var headlinePart1 = ' Bike Repair Shop';
-var headlinePart2 = 'Fast & professional';
-var description = 'Repair Your Bike Here & Buy Accessories. ' +
-                  'Book Your Appointment Now!';
-var finalUrl = 'https://www.example.com' //'www.example.com/Your-Landing-Page';
+
+// {adType=EXPANDED_TEXT_AD, headlinePart3=Free Esport, headlinePart2=Free Gaming Experience, 
+// path1=null, headlinePart1=Esport Free, path2=null, 
+// description=Free Esport for gamer lover. Check it out! starwingo3o.github.io/, 
+// id=504260779566, description2=Free Esport for gamer lover. Check it out! starwingo3o.github.io/, 
+// description1=Free Esport for gamer lover. Check it out! starwingo3o.github.io/}
+
+
+
+var headlinePart1 = 'Esport Free'; //' Bike Repair Shop';
+var headlinePart2 = 'Free Gaming Experience'; //Fast & professional';
+var headlinePart3 = 'Free Esport'; //Fast & professional';
+var description = 'Free Esport for gamer lover. Check it out! starwingo3o.github.io/'
+var finalUrl = 'https://starwingo3o.github.io/' //'www.example.com/Your-Landing-Page';
 // var urlPath1 = 'Path Text 1';
 // var urlPath2 = 'Path Text 2';
 // The text for your template ad
@@ -52,7 +62,7 @@ function main() {
 
   //Get top-N keywords which ranked by clicks from the campaign 
   var keywords = getAndRankKeywords(campaignName, dateRange, numbOfKeywords);
-  // var keywords = getKeywordsByReport(campaignName, dateRange);
+  // var keywords = getAndRankKeywordsByReport(campaignName, dateRange);
 
   Logger.log(keywords);
 
@@ -63,7 +73,7 @@ function main() {
     .get()
     .next();
 
-  //Create Ad Group by each name in the `adGroupNames` array
+  //Create new Ad Group by each name in the `adGroupNames` array
   adGroupNames.forEach(function (adGroupName) {
     //Build a new Ad Group
     var adGroup = createAdGroup(campaign, adGroupName);
@@ -77,12 +87,15 @@ function main() {
 
 }
 
+
 function getAndRankKeywords(campaignName, dateRange, N) {
   var keywordsArray = [];
 
   var keywords = AdsApp.keywords()
     .withCondition("CampaignName = " + "'" + campaignName + "'")
-    .orderBy("Clicks DESC")
+    // .orderBy("Clicks DESC")
+    // .orderBy("AverageCpc DESC")
+    .orderBy("MaxCpc DESC")
     .forDateRange(dateRange)
     .withLimit(N)
     .get();
@@ -102,12 +115,13 @@ function getAndRankKeywords(campaignName, dateRange, N) {
   return keywordsArray;
 }
 
+
 //not use, query doesn't support ORDER BY in API call
 //Report basic
 //https://developers.google.com/adwords/api/docs/guides/reporting
 //Best practice for reporting
 //https://developers.google.com/google-ads/scripts/docs/best-practices#reporting
-function getKeywordsByReport(campaignName, dateRange) {
+function getAndRankKeywordsByReport(campaignName, dateRange) {
   // if (ignorePausedAdGroups) {
   //   var whereStatement = 'AdGroupStatus = ENABLED ';
   // } else {
@@ -140,6 +154,11 @@ function rankKeywords() {
 }
 
 
+function getAndCopyAd(campaignName, dateRange) {
+
+}
+
+
 // create Ad Group,
 // https://www.damiengonot.com/blog/adwords-scripts-create-ads
 function createAdGroup(campaign, adGroupName) {
@@ -148,7 +167,7 @@ function createAdGroup(campaign, adGroupName) {
 
   var adGroupOperation = adGroupBuilder
     .withName(adGroupName.toLowerCase().replace(/ /g, '_'))
-    .withStatus('PAUSED')
+    // .withStatus('PAUSED') //If the status is not set, it will default to ENABLED.
     .build();
 
   var adGroup = adGroupOperation.getResult();
@@ -156,11 +175,13 @@ function createAdGroup(campaign, adGroupName) {
   return adGroup;
 }
 
+
 function addKeywordToAdGroup(adGroup, keywords) {
   //Add keywords
   keywords.forEach(function (keyword) {
     adGroup.newKeywordBuilder()
-      .withText('+' + keyword.toLowerCase().replace(/ /g, ' +'))
+      // .withText('+' + keyword.toLowerCase().replace(/ /g, ' +'))
+      .withText(keyword.toLowerCase())
       // .withCpc(costPerClick)
       // .withFinalUrl(finalUrl)
       .build();
@@ -169,11 +190,29 @@ function addKeywordToAdGroup(adGroup, keywords) {
   return adGroup;
 }
 
+
 function addExpandedTextAdToAdGroup(adGroup, adGroupName) {
   //Add expanded text ad
-  adGroup.newAd().expandedTextAdBuilder()
-    .withHeadlinePart1(adGroupName + headlinePart1)
+  adGroup = adGroup.newAd().expandedTextAdBuilder()
+    .withHeadlinePart1(headlinePart1)
     .withHeadlinePart2(headlinePart2)
+    .withHeadlinePart3(headlinePart3)
+    .withDescription(description)
+    // .withPath1('bike-repair')
+    // .withPath2(adGroupName.toLowerCase().replace(/ /g, '_'))
+    .withFinalUrl(finalUrl)
+    .build();
+
+  return adGroup;
+}
+
+
+function copyExpandedTextAdToAdGroup(adGroup, adGroupName, adContent) {
+  //Add expanded text ad
+  adGroup = adGroup.newAd().expandedTextAdBuilder()
+    .withHeadlinePart1(headlinePart1)
+    .withHeadlinePart2(headlinePart2)
+    .withHeadlinePart3(headlinePart3)
     .withDescription(description)
     // .withPath1('bike-repair')
     // .withPath2(adGroupName.toLowerCase().replace(/ /g, '_'))
