@@ -1,7 +1,13 @@
+/*
+Build new Ad with URL images instead of uploaded images.
+
+https://developers.google.com/google-ads/scripts/docs/examples/ads#add-a-responsive-display-ad
+*/
+
+
 function main() {
   addResponsiveDisplayAd();
 }
-
 
 // You create responsive display ads in two steps:
 //   1. Create or retrieve assets (marketing images, square marketing images,
