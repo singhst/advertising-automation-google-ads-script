@@ -20,6 +20,18 @@ Steps of this program:
 
    (b) the best Ad in the campaign 
 
+## Configuration on Google Ads
+
+Go to "TOOLS & SETTINGS" ==> select "Scripts" under "BULK ACTIONS".
+
+<img src="img\google-ads-readme-01.png" style="zoom:50%;" />
+
+The web UI of Scripts,
+
+<img src="img\google-ads-readme-02.png" style="zoom:50%;" />
+
+<img src="img\google-ads-readme-03.png" style="zoom:50%;" />
+
 ## Note
 
 Types of Ad:
@@ -42,19 +54,8 @@ Types of Ad:
 
 (i) expandedTextAd
 
-## Configuration on Google Ads
-
-Go to "TOOLS & SETTINGS" ==> select "Scripts" under "BULK ACTIONS".
-
-<img src="img\google-ads-readme-01.png" style="zoom:50%;" />
-
-The web UI of Scripts,
-
-<img src="img\google-ads-readme-02.png" style="zoom:50%;" />
-
-<img src="img\google-ads-readme-03.png" style="zoom:50%;" />
-
 ## Contributing
+
 [xxx]
 
 ## License
