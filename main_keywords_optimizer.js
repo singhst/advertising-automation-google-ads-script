@@ -27,7 +27,7 @@ var adGroupNames = [
   // 'Chicago',
   // 'Houston',
   // 'Philadelphia'
-  'best_keyword_cpc_last_14days'
+  'best_keyword_conv_last_14days'
 ];
 //Define the Ad Group name.
 
@@ -95,7 +95,8 @@ function getAndRankKeywords(campaignName, dateRange, N) {
     .withCondition("CampaignName = " + "'" + campaignName + "'")
     // .orderBy("Clicks DESC")
     // .orderBy("AverageCpc DESC")
-    .orderBy("MaxCpc DESC")
+    // .orderBy("MaxCpc DESC")
+    .orderBy("Conversions DESC")
     .forDateRange(dateRange)
     .withLimit(N)
     .get();
